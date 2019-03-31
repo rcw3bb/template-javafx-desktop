@@ -1,0 +1,97 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.util.stream.Collectors
+import java.util.stream.Stream
+
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
+group 'xyz.ronella.template'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.12
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+sourceSets {
+    main {
+        java {
+            include "**/*.*"
+        }
+    }
+}
+
+javafx {
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    version = '12'
+}
+
+mainClassName = "$moduleName/xyz.ronella.template.javafx.desktop.Main"
+
+def java_home = hasProperty('org.gradle.java.home') ? getProperty('org.gradle.java.home') : System.getenv('JAVA_HOME')
+def fx_jmods = hasProperty('path.to.fx.mods') ? getProperty('path.to.fx.mods') : System.getenv('PATH_TO_FX_MODS')
+
+task jlink(type: Exec) {
+    dependsOn 'clean'
+    dependsOn 'jar'
+
+    workingDir 'build'
+
+    if (java_home == null) {
+        throw new RuntimeException("java_home is not defined.")
+    }
+    if (fx_jmods == null) {
+        throw new RuntimeException("fx_jmods is not defined.")
+    }
+    commandLine "${java_home}/bin/jlink", '--module-path', "libs${File.pathSeparatorChar}${fx_jmods}",
+            '--add-modules', "${moduleName}", '--output', "${moduleName}", '--strip-debug',
+            '--compress', '2', '--no-header-files', '--no-man-pages'
+}
+
+processResources {
+    doFirst {
+        sourceSets.main.output.asList().stream()
+                .filter{___file -> ___file.path.matches(".*java.?main\$")}
+                .findFirst().ifPresent { ___file ->
+
+            def sourceDir = sourceSets.main.resources.sourceDirectories.asPath
+            def destinationDir = ___file.path
+
+            copy {
+                from(sourceDir) {
+                    include '**/*.fxml'
+                }
+                into(destinationDir)
+            }
+        }
+    }
+    doLast {
+        sourceSets.main.output.asList().stream()
+                .filter{___file -> ___file.path.matches(".*resources.?main\$")}
+                .findFirst().ifPresent { _1_file ->
+
+            Stream<Path> stream = Files.walk(Paths.get(_1_file.path))
+            try {
+                def fileToDelete = stream.filter{___path -> Files.isRegularFile(___path) && ___path.toFile().path.endsWith(".fxml")}.map{___path -> ___path.toFile()}
+                            .collect(Collectors.toList()).toArray()
+
+                if (fileToDelete.size()>0) {
+                    delete {
+                        delete fileToDelete
+                    }
+                }
+            }
+            finally {
+                stream.close()
+            }
+        }
+    }
+}
