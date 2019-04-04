@@ -4,13 +4,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +21,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class SampleController implements Initializable {
+
+    final static Logger LOG = LogManager.getLogger(SampleController.class);
 
     @FXML
     private TextField field1;
@@ -91,6 +95,7 @@ public class SampleController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        LOG.debug("Initialize");
     }
 
 }
