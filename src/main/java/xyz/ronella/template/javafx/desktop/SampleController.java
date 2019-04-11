@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import xyz.ronella.template.javafx.desktop.common.Images;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,6 +74,7 @@ public class SampleController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("about.fxml"));
             Parent root = loader.load();
             Stage stage = new Stage();
+            stage.getIcons().add(Images.ICON);
             stage.initOwner(parentStage);
             stage.setTitle("Hello World");
             Scene scene = new Scene(root);
