@@ -15,7 +15,20 @@ version '1.0-SNAPSHOT'
 sourceCompatibility = 1.12
 
 repositories {
-    mavenCentral()
+    maven {
+        url 'https://repo.ronella.xyz/archiva/repository/internal/'
+        credentials {
+            username "${archivaUsername}"
+            password "${archivaPassword}"
+        }
+    }
+    maven {
+        url 'https://repo.ronella.xyz/archiva/repository/snapshots/'
+        credentials {
+            username "${archivaUsername}"
+            password "${archivaPassword}"
+        }
+    }
 }
 
 dependencies {
