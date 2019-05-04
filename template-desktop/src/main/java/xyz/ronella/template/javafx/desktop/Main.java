@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import xyz.ronella.template.business.PrintText;
 import xyz.ronella.template.javafx.desktop.common.Images;
 
 public class Main extends Application {
@@ -18,6 +19,7 @@ public class Main extends Application {
         Parent root = loader.load();
         primaryStage.getIcons().add(Images.ICON);
         primaryStage.setTitle("Hello World");
+        PrintText.print("Processing Hello world");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();

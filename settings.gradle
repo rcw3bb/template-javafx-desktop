@@ -1,2 +1,3 @@
-rootProject.name = 'javafx-desktop'
+rootProject.name = 'template-javafx-desktop'
 
+include 'template-business', 'template-desktop'

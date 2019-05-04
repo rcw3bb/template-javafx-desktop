@@ -2,6 +2,7 @@ module template.javafx.desktop {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires template.business;
 
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
