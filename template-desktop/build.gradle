@@ -33,7 +33,7 @@ javafx {
 mainClassName = "$moduleName/xyz.ronella.template.javafx.desktop.Main"
 
 processResources {
-    def resources = ['fxml', 'xml', 'png']
+    def resources = ['fxml', 'xml', 'png', 'properties']
     doFirst {
         sourceSets.main.output.asList().stream()
                 .filter{___file -> ___file.path.matches(".*java.?main\$")}
@@ -83,4 +83,29 @@ jlink {
     }
     forceMerge('log4j-api')
     imageName = "${project.name}-${version}"
+}
+
+task preparePackage(dependsOn: ['jlink']) {
+    doLast {
+        def sourceDir = sourceSets.main.resources.sourceDirectories.asPath
+        def projectName = "${project.name}-${version}"
+
+        copy {
+            from(sourceDir)
+            into(Paths.get(buildDir.absolutePath, projectName))
+            include "doc/*.md"
+        }
+    }
+}
+
+task packWin(dependsOn: ['preparePackage']) {
+    doLast{
+        def projectName = "${project.name}-${version}"
+        def jlinkOutputDir = Paths.get(buildDir.absolutePath, projectName)
+        def outputFile =  Paths.get(buildDir.absolutePath, "pack", "${projectName}-win64.zip")
+
+        ant.zip(destfile: outputFile) {
+            fileset(dir: jlinkOutputDir)
+        }
+    }
 }
