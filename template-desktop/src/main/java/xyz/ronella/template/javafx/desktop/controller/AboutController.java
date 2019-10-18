@@ -1,4 +1,4 @@
-package xyz.ronella.template.javafx.desktop;
+package xyz.ronella.template.javafx.desktop.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -7,6 +7,6 @@ module template.javafx.desktop {
     requires org.apache.logging.log4j;
     requires org.apache.logging.log4j.core;
 
-    opens xyz.ronella.template.javafx.desktop to javafx.fxml;
+    opens xyz.ronella.template.javafx.desktop.controller to javafx.fxml;
     exports xyz.ronella.template.javafx.desktop;
 }
