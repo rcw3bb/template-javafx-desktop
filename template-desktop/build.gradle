@@ -93,8 +93,15 @@ task preparePackage(dependsOn: ['jlink']) {
         copy {
             from(sourceDir)
             into(Paths.get(buildDir.absolutePath, projectName))
-            include "doc/*.md"
+            include "template-desktop.exe"
         }
+
+        copy {
+            from(sourceDir.toString())
+            into(Paths.get(buildDir.absolutePath, projectName, "conf"))
+            include "nocon.json"
+        }
+
     }
 }
 
