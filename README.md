@@ -12,7 +12,7 @@ A template for creating JavaFX application.
 
 ## Author
 
-	* Ronaldo Webb
+* Ronaldo Webb
 
 ## License
 
