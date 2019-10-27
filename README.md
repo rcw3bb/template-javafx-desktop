@@ -18,7 +18,7 @@ A template for creating JavaFX application.
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## [Build](Build.md)
+## [Build](BUILD.md)
 
 ## [Changelog](CHANGELOG.md)
 
