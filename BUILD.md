@@ -3,7 +3,7 @@
 ### Pre-requisite
 
 * Java 12
-* Gradle 5.3x
+* Gradle 5.3.x
 
 ### Procedure
 
