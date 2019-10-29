@@ -5,7 +5,7 @@ import java.util.stream.Stream
 
 plugins {
     id 'org.openjfx.javafxplugin' version '0.0.7'
-    id 'org.beryx.jlink' version '2.5.1'
+    id 'org.beryx.jlink' version '2.16.2'
 }
 
 apply from: '../group-version.gradle'
