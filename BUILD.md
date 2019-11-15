@@ -3,15 +3,15 @@
 ### Pre-requisite
 
 * Java 12
-* Gradle 5.3.x
+* Gradle 5.6.x
 
 ### Procedure
 
 1. Create or update **<USER_HOME>\\.gradle\\gradle.properties** to have the following properties:
 
     ```properties
-    archivaUsername=<VALID_USERNAME>
-    archivaPassword=<VALID_PASSWORD>
+    artifactoryUsername=<VALID_USERNAME>
+    artifactoryPassword=<VALID_PASSWORD>
     ```
 
 2. Run following gradle command from **template-desktop directory**:
