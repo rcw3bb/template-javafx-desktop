@@ -7,3 +7,15 @@ repositories {
         }
     }
 }
+
+buildscript {
+    repositories {
+        maven {
+            url 'https://repo.ronella.xyz/artifactory/java-central'
+            credentials {
+                username "${artifactoryUsername}"
+                password "${artifactoryPassword}"
+            }
+        }
+    }
+}
