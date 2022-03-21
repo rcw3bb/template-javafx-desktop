@@ -1,22 +1,21 @@
 # Build
 
-### Pre-requisite
+## Pre-requisite
 
-* Java 12
-* Gradle 5.6.x
+* Java 17
 
-### Procedure
+### Packaging
 
-1. Create or update **<USER_HOME>\\.gradle\\gradle.properties** to have the following properties:
+```
+gradle packWin
+```
 
-    ```properties
-    artifactoryUsername=<VALID_USERNAME>
-    artifactoryPassword=<VALID_PASSWORD>
-    ```
+> The preceding command must be run from the location where you've cloned the repository.
 
-2. Run following gradle command from **template-desktop directory**:
-	```
-	gradle packWin
-	```
-	
-	> If the command completed successfully, it has generated a **build directory**. And from it, the package is inside the **pack directory**.
+> The package will be available in following directory:
+>
+> ```
+> <REPO_DIR>\build\pack
+> ```
+>
+> REPO_DIR is the location where you've cloned the repository.
