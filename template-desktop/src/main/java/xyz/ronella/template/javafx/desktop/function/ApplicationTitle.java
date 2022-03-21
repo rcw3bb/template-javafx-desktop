@@ -1,6 +1,6 @@
 package xyz.ronella.template.javafx.desktop.function;
 
-import xyz.ronella.template.business.common.Funxion;
+import xyz.ronella.trivial.command.Invoker;
 
 import java.util.StringJoiner;
 import java.util.function.Supplier;
@@ -10,7 +10,7 @@ public class ApplicationTitle implements Supplier<String> {
     public String get() {
         return new StringJoiner("")
                 .add("Desktop Template v")
-                .add(Funxion.buildGenerator(new FullVersion()).generate())
+                .add(Invoker.generate(new FullVersion()))
                 .toString();
     }
 }

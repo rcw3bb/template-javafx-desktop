@@ -1,7 +1,7 @@
 package xyz.ronella.template.javafx.desktop.common.impl;
 
-import org.apache.logging.log4j.LogManager;
-import xyz.ronella.template.business.common.LoggerPlus;
+import org.slf4j.LoggerFactory;
+import xyz.ronella.logging.LoggerPlus;
 import xyz.ronella.template.javafx.desktop.common.IVersion;
 
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 public class Version implements IVersion {
 
-    private final static LoggerPlus LOGGER_PLUS = new LoggerPlus(LogManager.getLogger(Version.class));
+    private final static LoggerPlus LOGGER_PLUS = new LoggerPlus(LoggerFactory.getLogger(Version.class));
 
     private ResourceBundle prop;
 

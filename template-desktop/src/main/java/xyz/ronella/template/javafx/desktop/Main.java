@@ -7,9 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import xyz.ronella.template.business.PrintText;
-import xyz.ronella.template.business.common.Funxion;
 import xyz.ronella.template.javafx.desktop.common.Images;
 import xyz.ronella.template.javafx.desktop.function.ApplicationTitle;
+import xyz.ronella.trivial.command.Invoker;
 
 public class Main extends Application {
     private static final String MAIN_UI_FILE = "sample.fxml";
@@ -20,7 +20,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(classLoader.getResource(MAIN_UI_FILE));
         Parent root = loader.load();
         primaryStage.getIcons().add(Images.ICON);
-        primaryStage.setTitle(Funxion.buildGenerator(new ApplicationTitle()).generate());
+        primaryStage.setTitle(Invoker.generate(new ApplicationTitle()));
         PrintText.print("Processing Hello world");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);

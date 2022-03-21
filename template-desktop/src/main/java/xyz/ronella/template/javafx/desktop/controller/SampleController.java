@@ -11,8 +11,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import xyz.ronella.logging.LoggerPlus;
 import xyz.ronella.template.javafx.desktop.common.Images;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 
 public class SampleController implements Initializable {
 
-    final static Logger LOG = LogManager.getLogger(SampleController.class);
+    private final static LoggerPlus LOG = new LoggerPlus(LoggerFactory.getLogger(SampleController.class));
 
     @FXML
     private TextField field1;

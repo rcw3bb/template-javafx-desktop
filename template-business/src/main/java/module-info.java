@@ -1,7 +1,8 @@
 module template.business {
-    requires org.apache.logging.log4j;
-    requires org.apache.logging.log4j.core;
+    requires org.slf4j;
+
+    requires xyz.ronella.casual.trivial;
+    requires xyz.ronella.logging.logger.plus;
 
     exports xyz.ronella.template.business;
-    exports xyz.ronella.template.business.common;
 }
