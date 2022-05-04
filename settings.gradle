@@ -1,3 +1,22 @@
+pluginManagement {
+    repositories {
+        if (Boolean.valueOf(USE_PRIVATE_REPO)) {
+            println "Using Private Repository for plugin"
+            maven {
+                url 'https://repo.ronella.xyz/artifactory/java-central'
+                credentials {
+                    username "${artifactoryUsername}"
+                    password "${artifactoryPassword}"
+                }
+            }
+        }
+        else {
+            println "Using gradlePluginPortal Repository for plugin"
+            gradlePluginPortal()
+        }
+    }
+}
+
 rootProject.name = 'template-javafx-desktop'
 
 include 'template-business', 'template-desktop'
