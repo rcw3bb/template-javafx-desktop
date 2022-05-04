@@ -91,21 +91,25 @@ jlink {
 
 task preparePackage(dependsOn: ['jlink']) {
     doLast {
-        def sourceDir = sourceSets.main.resources.sourceDirectories.asPath
         def projectName = "${project.name}-${version}"
+        def batchFile = "${project.name}.bat"
+        def batchPath = Paths.get(buildDir.absolutePath, projectName, batchFile).toFile()
 
         copy {
-            from(sourceDir)
+            from(Paths.get(buildDir.absolutePath, projectName, "bin"))
             into(Paths.get(buildDir.absolutePath, projectName))
-            include "template-desktop.exe"
+            include batchFile
         }
 
-        copy {
-            from(sourceDir.toString())
-            into(Paths.get(buildDir.absolutePath, projectName, "conf"))
-            include "nocon.json"
+        if (batchPath.exists()) {
+            def pattern = "set DIR=\"%~dp0\""
+            def replaceWith = "set DIR=\"%~dp0\\bin\""
+            def content = batchPath.text
+            def updatedContent = content.replace(pattern, replaceWith)
+            if (!content.equals(updatedContent)) {
+                batchPath.write(updatedContent)
+            }
         }
-
     }
 }
 
