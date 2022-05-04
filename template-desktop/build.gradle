@@ -83,6 +83,7 @@ jlink {
     launcher{
         moduleName = "${MAIN_MODULE}"
         mainClassName = "${MAIN_CLASS}"
+        noConsole = true
     }
     forceMerge('slf4j-api','log4j-api')
     imageName = "${project.name}-${version}"
