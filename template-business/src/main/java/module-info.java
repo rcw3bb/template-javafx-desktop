@@ -1,3 +1,6 @@
+/**
+ * The module for the business logics.
+ */
 module template.business {
     requires org.slf4j;
 

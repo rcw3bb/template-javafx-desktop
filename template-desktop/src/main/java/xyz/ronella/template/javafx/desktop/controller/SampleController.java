@@ -79,6 +79,7 @@ public class SampleController implements Initializable {
             stage.setTitle("Hello World");
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.initModality(Modality.WINDOW_MODAL);
             stage.show();
         }

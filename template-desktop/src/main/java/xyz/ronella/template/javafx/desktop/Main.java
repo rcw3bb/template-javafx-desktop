@@ -24,6 +24,7 @@ public class Main extends Application {
         PrintText.print("Processing Hello world");
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 
