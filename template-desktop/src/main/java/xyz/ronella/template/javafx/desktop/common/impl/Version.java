@@ -3,6 +3,8 @@ package xyz.ronella.template.javafx.desktop.common.impl;
 import org.slf4j.LoggerFactory;
 import xyz.ronella.logging.LoggerPlus;
 import xyz.ronella.template.javafx.desktop.common.IVersion;
+import xyz.ronella.trivial.decorator.StringBuilderAppender;
+import xyz.ronella.trivial.functional.impl.StringBuilderDelim;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -44,6 +46,17 @@ public class Version implements IVersion {
     @Override
     public String getBuild() {
         return prop.getString("BUILD");
+    }
+
+    public static String getFullVersion() {
+        final var version = new Version();
+
+        final var sbVersion = new StringBuilderAppender(new StringBuilderDelim<>("-"))
+                .append(String.format("%s.%s.%s", version.getMajor(), version.getMinor(), version.getMaintenance()))
+                .appendWhen(String.format("%s", version.getBuild())).when(___stringBuilder ->
+                        !version.getBuild().isBlank());
+
+        return sbVersion.toString();
     }
 
 }

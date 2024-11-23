@@ -1,12 +1,23 @@
 import java.nio.file.Files
 import java.nio.file.Paths
+import java.text.SimpleDateFormat
 import java.util.stream.Collectors
 import java.util.stream.Stream
 import org.apache.tools.ant.filters.ReplaceTokens
 
+buildscript {
+    configurations.classpath {
+        resolutionStrategy.activateDependencyLocking()
+    }
+}
+
 plugins {
-    id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '3.0.1'
+    alias(libs.plugins.javafxplugin)
+    alias(libs.plugins.jlink)
+}
+
+dependencyLocking {
+    lockAllConfigurations()
 }
 
 apply from: '../group-version.gradle'
@@ -16,6 +27,20 @@ apply from: '../common-dependencies.gradle'
 
 dependencies {
     implementation project(path: ':template-business')
+}
+
+ext {
+    packageName = "${project.name}-${version}"
+    logConfig = "logback.xml"
+    FILTER_TOKEN = [
+            'project.name': project.name
+            ,'app.version' : version.toString()
+            ,'build.date' : new SimpleDateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(new Date())
+            ,'MAJOR_VERSION': MAJOR_VERSION
+            ,'MINOR_VERSION': MINOR_VERSION
+            ,'MAINTENANCE_VERSION': MAINTENANCE_VERSION
+            ,'BUILD_VERSION': BUILD_VERSION
+    ]
 }
 
 sourceSets {
@@ -37,20 +62,11 @@ javafx {
 }
 
 processResources {
-    filesMatching('version.properties') {
-        filter(ReplaceTokens, tokens: [
-                'MAJOR_VERSION': MAJOR_VERSION
-                ,'MINOR_VERSION': MINOR_VERSION
-                ,'MAINTENANCE_VERSION': MAINTENANCE_VERSION
-                ,'BUILD_VERSION': BUILD_VERSION
-        ])
-    }
 
-    filesMatching('log4j2.xml') {
-        filter(ReplaceTokens, tokens: ['project.name': project.name])
-    }
+    filter(ReplaceTokens, tokens: FILTER_TOKEN)
 
     def resources = ['fxml', 'xml', 'png', 'properties']
+    def resourceFiles = ['version.properties', logConfig]
     doFirst {
         sourceSets.main.output.asList().stream()
                 .filter{___file -> ___file.path.matches(".*java.?main\$")}
@@ -60,9 +76,11 @@ processResources {
             def destinationDir = ___file.path
 
             copy {
+                //These are the files copied to the build/classes/java/main directory.
+                filter(ReplaceTokens, tokens: FILTER_TOKEN)
                 from(sourceDir) {
                     exclude 'version.properties'
-                    exclude 'log4j2.xml'
+                    exclude logConfig
                     include resources.stream().map{ ___ext -> "**/*.${___ext}"}.collect(Collectors.toList())
                 }
                 into(destinationDir)
@@ -79,11 +97,8 @@ processResources {
                 def fileToDelete = stream.filter{___path ->
                     Files.isRegularFile(___path)
                             && resources.stream().any {___ext -> ___path.toFile().path.endsWith(___ext)}
-                            && !(___path.endsWith("version.properties")
-                                || ___path.endsWith("log4j2.xml")
-                            )
-                }.map{___path -> ___path.toFile()}
-                            .collect(Collectors.toList()).toArray()
+                            && !(resourceFiles.find{___file -> ___path.endsWith(___file)} != null)
+                }.map{___path -> ___path.toFile()}.collect(Collectors.toList()).toArray()
 
                 if (fileToDelete.size()>0) {
                     delete {
@@ -101,12 +116,11 @@ processResources {
 jlink {
     options = ['--strip-debug', '--compress', 'zip-9', '--no-header-files', '--no-man-pages']
     launcher{
-        moduleName = "${MAIN_MODULE}"
-        mainClassName = "${MAIN_CLASS}"
-        noConsole = true
-        jvmArgs = ['-Dlog4j.configurationFile={{BIN_DIR}}\\conf\\log4j2.xml']
+        moduleName = application.mainModule
+        mainClassName = application.mainClass
+        jvmArgs = ["-Dlogback.configurationFile={{BIN_DIR}}\\conf\\${logConfig}"]
     }
-    imageName = "${project.name}-${version}"
+    imageName = packageName.toString()
 }
 
 task preparePackage(dependsOn: ['jlink']) {
@@ -119,8 +133,8 @@ task preparePackage(dependsOn: ['jlink']) {
         def jlinkTargetDir = Paths.get(buildDirPath, projectName)
         def jlinkConfDir = Paths.get(jlinkTargetDir.toFile().absolutePath, "conf")
 
-        def log4jFile = "log4j2.xml"
-        def log4jPath = Paths.get(jlinkConfDir.toFile().absolutePath, log4jFile).toFile()
+        def logbackFile = logConfig
+        def logbackPath = Paths.get(jlinkConfDir.toFile().absolutePath, logbackFile).toFile()
 
         def mainResources = sourceSets.main.resources.sourceDirectories.asPath
         def outputResources = sourceSets.main.output.resourcesDir
@@ -136,14 +150,14 @@ task preparePackage(dependsOn: ['jlink']) {
                 exclude '*.fxml'
                 exclude 'icon.png'
                 exclude 'version.properties'
-                exclude 'log4j2.xml'
+                exclude logConfig
             }
             into(jlinkConfDir)
         }
 
         copy {
             from (outputResources) {
-                include 'log4j2.xml'
+                include logConfig
             }
             into(jlinkConfDir)
         }
@@ -158,13 +172,13 @@ task preparePackage(dependsOn: ['jlink']) {
             }
         }
 
-        if (log4jPath.exists()) {
+        if (logbackPath.exists()) {
             def pattern = "logs/"
-            def replaceWith = "../logs/"
-            def content = log4jPath.text
-            def updatedContent = content.replaceAll(pattern, replaceWith)
-            if (content!=updatedContent) {
-                log4jPath.write(updatedContent)
+            def replaceWith = "../${pattern}"
+            def content = logbackPath.text
+            def updatedContent = content.replace(pattern, replaceWith)
+            if (content != updatedContent) {
+                logbackPath.write(updatedContent)
             }
         }
     }
