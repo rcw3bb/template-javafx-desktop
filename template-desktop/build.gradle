@@ -63,10 +63,16 @@ javafx {
 
 processResources {
 
-    filter(ReplaceTokens, tokens: FILTER_TOKEN)
+    filesMatching('*.properties') {
+        filter(ReplaceTokens, tokens: FILTER_TOKEN)
+    }
+
+    filesMatching(logConfig) {
+        filter(ReplaceTokens, tokens: FILTER_TOKEN)
+    }
 
     def resources = ['fxml', 'xml', 'png', 'properties']
-    def resourceFiles = ['version.properties', logConfig]
+    def resourceFiles = [logConfig]
     doFirst {
         sourceSets.main.output.asList().stream()
                 .filter{___file -> ___file.path.matches(".*java.?main\$")}
@@ -77,9 +83,10 @@ processResources {
 
             copy {
                 //These are the files copied to the build/classes/java/main directory.
-                filter(ReplaceTokens, tokens: FILTER_TOKEN)
+                filesMatching('*.properties') {
+                    filter(ReplaceTokens, tokens: FILTER_TOKEN)
+                }
                 from(sourceDir) {
-                    exclude 'version.properties'
                     exclude logConfig
                     include resources.stream().map{ ___ext -> "**/*.${___ext}"}.collect(Collectors.toList())
                 }
@@ -118,6 +125,7 @@ jlink {
     launcher{
         moduleName = application.mainModule
         mainClassName = application.mainClass
+        noConsole = true
         jvmArgs = ["-Dlogback.configurationFile={{BIN_DIR}}\\conf\\${logConfig}"]
     }
     imageName = packageName.toString()
@@ -149,7 +157,7 @@ task preparePackage(dependsOn: ['jlink']) {
             from(mainResources) {
                 exclude '*.fxml'
                 exclude 'icon.png'
-                exclude 'version.properties'
+                exclude 'app-info.properties'
                 exclude logConfig
             }
             into(jlinkConfDir)
