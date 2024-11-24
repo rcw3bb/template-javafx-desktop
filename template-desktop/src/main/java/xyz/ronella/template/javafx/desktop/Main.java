@@ -13,6 +13,12 @@ import xyz.ronella.template.javafx.desktop.common.Images;
 import xyz.ronella.template.javafx.desktop.util.AppInfo;
 import xyz.ronella.trivial.handy.PathFinder;
 
+/**
+ * The Main class is the entry point of the application.
+ *
+ * @since 1.0.0
+ * @author Ron Webb
+ */
 public class Main extends Application {
 
     static {
@@ -33,13 +39,13 @@ public class Main extends Application {
     }
 
     private final static String MAIN_UI_FILE = "sample.fxml";
-    private final static LoggerPlus LOGGER_PLUS = new LoggerPlus(LoggerFactory.getLogger(Main.class));
+    private final static LoggerPlus LOGGER = new LoggerPlus(LoggerFactory.getLogger(Main.class));
 
     @Override
     public void start(final Stage primaryStage) throws Exception {
         final var appInfo = AppInfo.INSTANCE;
         final var appTitle = String.format("%s v%s", appInfo.getAppName(), appInfo.getAppVersion());
-        final ClassLoader classLoader = getClass().getClassLoader();
+        final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final FXMLLoader loader = new FXMLLoader(classLoader.getResource(MAIN_UI_FILE));
         final Parent root = loader.load();
         primaryStage.getIcons().add(Images.ICON);
@@ -51,8 +57,12 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    /**
+     * The main method.
+     * @param args The command line arguments.
+     */
     public static void main(final String[] args) {
-        try (var mLOG = LOGGER_PLUS.groupLog("main")) {
+        try (var mLOG = LOGGER.groupLog("main")) {
             final var appInfo = AppInfo.INSTANCE;
             final var header = String.format("%s v%s (%s)"
                     , appInfo.getAppName()

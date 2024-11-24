@@ -12,6 +12,8 @@ buildscript {
 }
 
 plugins {
+    id 'pmd'
+    id 'jacoco'
     alias(libs.plugins.javafxplugin)
     alias(libs.plugins.jlink)
 }
@@ -59,6 +61,21 @@ application {
 javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
     version = '21'
+}
+
+pmd {
+    consoleOutput = true
+    toolVersion = "7.7.0"
+    rulesMinimumPriority = 5
+    ruleSetFiles = files('../quality/pmd/java/custom.xml')
+    ruleSets = []
+}
+
+pmdTest.enabled = false
+
+test {
+    dependsOn(pmdMain)
+    finalizedBy(jacocoTestReport)
 }
 
 processResources {

@@ -6,6 +6,8 @@ buildscript {
 
 plugins {
     id 'java-library'
+    id 'pmd'
+    id 'jacoco'
 }
 
 dependencyLocking {
@@ -32,6 +34,21 @@ compileJava {
 java {
     withJavadocJar()
     withSourcesJar()
+}
+
+pmd {
+    consoleOutput = true
+    toolVersion = "7.7.0"
+    rulesMinimumPriority = 5
+    ruleSetFiles = files('../quality/pmd/java/custom.xml')
+    ruleSets = []
+}
+
+pmdTest.enabled = false
+
+test {
+    dependsOn(pmdMain)
+    finalizedBy(jacocoTestReport)
 }
 
 task testsJar(type: Jar, dependsOn: [testClasses]) {

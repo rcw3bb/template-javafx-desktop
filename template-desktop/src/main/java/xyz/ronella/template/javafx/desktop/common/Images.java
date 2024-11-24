@@ -4,6 +4,12 @@ import javafx.scene.image.Image;
 
 import java.util.Objects;
 
+/**
+ * The Images class is the class that provides the images used in the application.
+ *
+ * @since 1.0.0
+ * @author Ron Webb
+ */
 final public class Images {
 
     private static final String ICON_FILE = "icon.png";
@@ -12,5 +18,5 @@ final public class Images {
     }
 
     public static Image ICON = new Image(Objects.requireNonNull(
-            Images.class.getClassLoader().getResourceAsStream(ICON_FILE)));
+            Thread.currentThread().getContextClassLoader().getResourceAsStream(ICON_FILE)));
 }

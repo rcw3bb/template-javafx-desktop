@@ -5,10 +5,13 @@ import xyz.ronella.logging.LoggerPlus;
 
 /**
  * A simple class implementation.
+ *
+ * @since 1.0.0
+ * @author Ron Webb
  */
 public final class PrintText {
 
-    private final static LoggerPlus LOG = new LoggerPlus(LoggerFactory.getLogger(PrintText.class));
+    private final static LoggerPlus LOGGER = new LoggerPlus(LoggerFactory.getLogger(PrintText.class));
 
     private PrintText() {}
 
@@ -17,8 +20,9 @@ public final class PrintText {
      * @param text The text to print.
      */
     public static void print(String text) {
-        LOG.debug("public static void print(String text) [BEGIN]");
-        System.out.println(text);
-        LOG.debug("public static void print(String text) [END]");
+        try (final var mLOG = LOGGER.groupLog("print")) {
+            mLOG.info("Printing text: %s", text);
+            System.out.println(text);
+        }
     }
 }

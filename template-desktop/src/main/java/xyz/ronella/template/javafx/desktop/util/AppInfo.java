@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
  */
 final public class AppInfo {
 
-    private static final LoggerPlus LOGGER_PLUS = new LoggerPlus(LoggerFactory.getLogger(AppInfo.class));
+    private static final LoggerPlus LOGGER = new LoggerPlus(LoggerFactory.getLogger(AppInfo.class));
     private static final String CONFIG_FILE = "app-info.properties";
     private transient ResourceBundle prop = null;
 
@@ -37,7 +37,7 @@ final public class AppInfo {
             }
 
         } catch (IOException exp) {
-            LOGGER_PLUS.error(LOGGER_PLUS.getStackTraceAsString(exp));
+            LOGGER.error(LOGGER.getStackTraceAsString(exp));
             throw new RuntimeException(exp);
         }
     }
