@@ -21,6 +21,13 @@ public class AboutController implements Initializable {
     @FXML
     private Button btnClose;
 
+    /**
+     * The constructor.
+     */
+    public AboutController() {
+        super();
+    }
+
     @FXML
     private void btnCloseAction(ActionEvent event) {
         Stage stage = (Stage) btnClose.getScene().getWindow();

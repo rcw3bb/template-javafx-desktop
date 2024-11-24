@@ -57,6 +57,13 @@ public class SampleController implements Initializable {
     @FXML
     private MenuItem mnuAbout;
 
+    /**
+     * The constructor.
+     */
+    public SampleController() {
+        super();
+    }
+
     @FXML
     private void mnuCloseAction(ActionEvent event) {
         Stage stage = (Stage) mainMenuBar.getScene().getWindow();

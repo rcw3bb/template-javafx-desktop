@@ -1,3 +1,9 @@
+/**
+ * The module-info.java file is the module descriptor file that describes the module.
+ *
+ * @since 1.0.0
+ * @author Ron Webb
+ */
 module template.javafx.desktop {
     requires javafx.controls;
     requires javafx.fxml;

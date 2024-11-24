@@ -1,6 +1,0 @@
-ext {
-    CALCULATED_BUILD = BUILD_VERSION.isBlank() ? "" : "-${BUILD_VERSION}"
-}
-
-group 'xyz.ronella.template'
-version "${MAJOR_VERSION}.${MINOR_VERSION}.${MAINTENANCE_VERSION}${CALCULATED_BUILD}"

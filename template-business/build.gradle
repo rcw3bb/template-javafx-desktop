@@ -14,10 +14,7 @@ dependencyLocking {
     lockAllConfigurations()
 }
 
-apply from: '../group-version.gradle'
-apply from: '../compatibility.gradle'
-apply from: '../repositories.gradle'
-apply from: '../common-dependencies.gradle'
+apply from: '../common.gradle'
 
 compileJava {
     doFirst {
@@ -29,11 +26,6 @@ compileJava {
                 '-d', sourceSets.main.output.classesDirs.asPath
         ]
     }
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
 }
 
 pmd {
@@ -49,17 +41,4 @@ pmdTest.enabled = false
 test {
     dependsOn(pmdMain)
     finalizedBy(jacocoTestReport)
-}
-
-task testsJar(type: Jar, dependsOn: [testClasses]) {
-    archiveClassifier.set('tests')
-    from sourceSets.test.output
-}
-
-jar.finalizedBy(javadocJar, sourcesJar, testsJar)
-
-javadoc {
-    if(JavaVersion.current().isJava9Compatible()) {
-        options.addBooleanOption('html5', true)
-    }
 }

@@ -22,10 +22,7 @@ dependencyLocking {
     lockAllConfigurations()
 }
 
-apply from: '../group-version.gradle'
-apply from: '../compatibility.gradle'
-apply from: '../repositories.gradle'
-apply from: '../common-dependencies.gradle'
+apply from: '../common.gradle'
 
 dependencies {
     implementation project(path: ':template-business')
@@ -38,10 +35,6 @@ ext {
             'project.name': project.name
             ,'app.version' : version.toString()
             ,'build.date' : new SimpleDateFormat('yyyy-MM-dd HH:mm:ss.SSS').format(new Date())
-            ,'MAJOR_VERSION': MAJOR_VERSION
-            ,'MINOR_VERSION': MINOR_VERSION
-            ,'MAINTENANCE_VERSION': MAINTENANCE_VERSION
-            ,'BUILD_VERSION': BUILD_VERSION
     ]
 }
 

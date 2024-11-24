@@ -41,6 +41,13 @@ public class Main extends Application {
     private final static String MAIN_UI_FILE = "sample.fxml";
     private final static LoggerPlus LOGGER = new LoggerPlus(LoggerFactory.getLogger(Main.class));
 
+    /**
+     * The constructor.
+     */
+    public Main() {
+        super();
+    }
+
     @Override
     public void start(final Stage primaryStage) throws Exception {
         final var appInfo = AppInfo.INSTANCE;

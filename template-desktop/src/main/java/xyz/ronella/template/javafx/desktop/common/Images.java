@@ -17,6 +17,9 @@ final public class Images {
     private Images() {
     }
 
+    /**
+     * The ICON is the application icon.
+     */
     public static Image ICON = new Image(Objects.requireNonNull(
             Thread.currentThread().getContextClassLoader().getResourceAsStream(ICON_FILE)));
 }
