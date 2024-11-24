@@ -4,6 +4,14 @@
 
 * Java 21
 
+## Development Run
+
+Run the application using the following:
+
+```
+gradle run
+```
+
 ### Packaging
 
 ```
