@@ -16,6 +16,7 @@ plugins {
     id 'jacoco'
     alias(libs.plugins.javafxplugin)
     alias(libs.plugins.jlink)
+    //alias(libs.plugins.snyk)
 }
 
 dependencyLocking {
@@ -53,18 +54,28 @@ application {
 
 javafx {
     modules = [ 'javafx.controls', 'javafx.fxml' ]
-    version = '21'
+    version = java.targetCompatibility.majorVersion
+    logger.lifecycle("JFX Version: ${javafx.version}")
 }
 
 pmd {
     consoleOutput = true
-    toolVersion = "7.7.0"
+    toolVersion = configurations.pmdTool.resolvedConfiguration.firstLevelModuleDependencies.moduleVersion.first
     rulesMinimumPriority = 5
     ruleSetFiles = files('../quality/pmd/java/custom.xml')
     ruleSets = []
+    logger.lifecycle("PMD version: ${pmd.toolVersion}")
 }
 
 pmdTest.enabled = false
+
+/*snyk {
+    arguments = '--all-sub-projects'
+    severity = 'low'
+    api = "${snykToken}"
+    autoDownload = true
+    autoUpdate = true
+}*/
 
 test {
     dependsOn(pmdMain)

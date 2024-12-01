@@ -1,5 +1,6 @@
 configurations {
     mockitoAgent
+    pmdTool
 }
 
 repositories {
@@ -14,6 +15,8 @@ dependencies {
     mockitoAgent(testLibs.mockito.core) {
         transitive = false
     }
+
+    pmdTool libs.pmd //This must be the only dependency attached to the pmdTool configuration.
 }
 
 group 'xyz.ronella.template'
@@ -31,6 +34,11 @@ test {
     useJUnitPlatform()
 }
 
+task testsJar(type: Jar, dependsOn: [testClasses]) {
+    archiveClassifier.set('tests')
+    from sourceSets.test.output
+}
+
 jar {
     duplicatesStrategy = DuplicatesStrategy.INHERIT
     manifest {
@@ -40,11 +48,7 @@ jar {
         )
     }
     dependsOn(test)
-}
-
-task testsJar(type: Jar, dependsOn: [testClasses]) {
-    archiveClassifier.set('tests')
-    from sourceSets.test.output
+    finalizedBy(javadocJar, sourcesJar, testsJar)
 }
 
 javadoc {
@@ -52,7 +56,5 @@ javadoc {
         options.addBooleanOption('html5', true)
     }
 }
-
-jar.finalizedBy(javadocJar, sourcesJar, testsJar)
 
 

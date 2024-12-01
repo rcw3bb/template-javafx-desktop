@@ -8,6 +8,7 @@ plugins {
     id 'java-library'
     id 'pmd'
     id 'jacoco'
+    //alias(libs.plugins.snyk)
 }
 
 dependencyLocking {
@@ -30,13 +31,22 @@ compileJava {
 
 pmd {
     consoleOutput = true
-    toolVersion = "7.7.0"
+    toolVersion = configurations.pmdTool.resolvedConfiguration.firstLevelModuleDependencies.moduleVersion.first
     rulesMinimumPriority = 5
     ruleSetFiles = files('../quality/pmd/java/custom.xml')
     ruleSets = []
+    logger.lifecycle("PMD version: ${pmd.toolVersion}")
 }
 
 pmdTest.enabled = false
+
+/*snyk {
+    arguments = '--all-sub-projects'
+    severity = 'low'
+    api = "${snykToken}"
+    autoDownload = true
+    autoUpdate = true
+}*/
 
 test {
     dependsOn(pmdMain)
